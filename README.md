@@ -9,7 +9,7 @@ It currently does _NOT_ display advertisements, so __do NOT use this to play on 
 ###Dependencies
 
 This project requires that you have the following software installed:
-* A Java compiler (if you wish to build the loader from source)
+* A Java 7 compiler (if you wish to build the loader from source)
 * A Java interpreter or virtual machine _(use of Oracle's JRE is recommended)_
 * A graphical window manager for your operating system
 
