@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="rsloader" default="all">
+
+    <!-- Uncomment the following property if no tests compilation is needed -->
+
+    <property name="skip.tests" value="true"/>
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="128m"/>
+    <patternset id="ignored.files">
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/SCCS/**"/>
+        <exclude name="**/RCS/**"/>
+        <exclude name="**/rcs/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/.pyc/**"/>
+        <exclude name="**/.pyo/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/*.lib/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/.bundle/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.war"/>
+        <include name="*.ear"/>
+        <include name="*.apk"/>
+        <include name="*.zip"/>
+        <include name="*.swc"/>
+        <include name="*.ane"/>
+        <include name="*.egg"/>
+        <include name="*.jar"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java"/>
+        <exclude name="**/?*.form"/>
+        <exclude name="**/?*.class"/>
+        <exclude name="**/?*.groovy"/>
+        <exclude name="**/?*.scala"/>
+        <exclude name="**/?*.flex"/>
+        <exclude name="**/?*.kt"/>
+        <exclude name="**/?*.clj"/>
+    </patternset>
+
+    <!-- Modules -->
+
+
+    <!-- Module RSLoader -->
+
+    <dirname property="module.rsloader.basedir" file="${ant.file}"/>
+
+
+    <property name="compiler.args.rsloader" value="${compiler.args}"/>
+
+    <property name="rsloader.output.dir" value="${module.rsloader.basedir}/out/production/RSLoader"/>
+    <property name="rsloader.testoutput.dir" value="${module.rsloader.basedir}/out/test/RSLoader"/>
+
+    <path id="rsloader.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="rsloader.module.production.classpath"/>
+
+    <path id="rsloader.runtime.production.module.classpath">
+        <pathelement location="${rsloader.output.dir}"/>
+    </path>
+
+    <path id="rsloader.module.classpath">
+        <pathelement location="${rsloader.output.dir}"/>
+    </path>
+
+    <path id="rsloader.runtime.module.classpath">
+        <pathelement location="${rsloader.testoutput.dir}"/>
+        <pathelement location="${rsloader.output.dir}"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.rsloader">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.rsloader">
+        <patternset refid="excluded.from.module.rsloader"/>
+    </patternset>
+
+    <path id="rsloader.module.sourcepath">
+        <dirset dir="${module.rsloader.basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.rsloader" depends="compile.module.rsloader.production,compile.module.rsloader.tests"
+            description="Compile module RSLoader"/>
+
+    <target name="compile.module.rsloader.production" description="Compile module RSLoader; production classes">
+        <mkdir dir="${rsloader.output.dir}"/>
+        <javac destdir="${rsloader.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+               memorymaximumsize="${compiler.max.memory}" fork="true">
+            <compilerarg line="${compiler.args.rsloader}"/>
+            <bootclasspath refid="rsloader.module.bootclasspath"/>
+            <classpath refid="rsloader.module.production.classpath"/>
+            <src refid="rsloader.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.rsloader"/>
+        </javac>
+
+        <copy todir="${rsloader.output.dir}">
+            <fileset dir="${module.rsloader.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.rsloader.tests" depends="compile.module.rsloader.production"
+            description="compile module RSLoader; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.rsloader" description="cleanup module">
+        <delete dir="${rsloader.output.dir}"/>
+        <delete dir="${rsloader.testoutput.dir}"/>
+    </target>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.rsloader" description="cleanup all"/>
+
+    <target name="build.modules" depends="init, clean, compile.module.rsloader" description="build all modules"/>
+
+    <target name="init.artifacts">
+        <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+        <property name="artifact.output.rsloader" value="${basedir}/out"/>
+        <mkdir dir="${artifacts.temp.dir}"/>
+        <property name="temp.jar.path.rsloader.jar" value="${artifacts.temp.dir}/rsloader.jar"/>
+    </target>
+
+    <target name="artifact.rsloader" depends="init.artifacts, compile.module.rsloader"
+            description="Build &#39;RSLoader&#39; artifact">
+        <property name="artifact.temp.output.rsloader" value="${artifacts.temp.dir}/RSLoader"/>
+        <mkdir dir="${artifact.temp.output.rsloader}"/>
+        <jar destfile="${temp.jar.path.rsloader.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+            <zipfileset dir="${rsloader.output.dir}"/>
+            <zipfileset dir="${basedir}/src/META-INF"/>
+        </jar>
+        <copy file="${temp.jar.path.rsloader.jar}" tofile="${artifact.temp.output.rsloader}/rsloader.jar"/>
+    </target>
+
+    <target name="build.all.artifacts" depends="artifact.rsloader" description="Build all artifacts">
+        <mkdir dir="${artifact.output.rsloader}"/>
+        <copy todir="${artifact.output.rsloader}">
+            <fileset dir="${artifact.temp.output.rsloader}"/>
+        </copy>
+
+        <!-- Delete temporary files -->
+        <delete dir="${artifacts.temp.dir}"/>
+    </target>
+
+    <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
