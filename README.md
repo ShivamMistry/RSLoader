@@ -23,27 +23,34 @@ To build RSLoader (with Ant installed), simply use the command `ant` in the main
 Otherwise, use `javac` and specify the source files to compile the project.
 
 To run RSLoader from the built class files, use the command:
+
 `java -cp out/production/RSLoader com.speed.RSLoader`
+
 Alternatively, if using the Ant build, you can run it from the redistributable jar file:
+
 `java -jar out/rsloader.jar`
 
 If you downloaded the RSLoader binary, to run it, execute the command
+
 `java -jar rsloader.jar`
 
 ###Usage
 
 To use a different language, when loading the client append one of the following numbers after the command to change the loading language:
-*0 - English
-*1 - Deutsch
-*2 - Français
-*3 - Português
-*6 - Español latinoamericano
+
+* 0 - English
+* 1 - Deutsch
+* 2 - Français
+* 3 - Português
+* 6 - Español latinoamericano
 
 For example, to load the French game with the downloaded binary
+
 `java -jar rsloader.jar 2`
 
 The nolimits option will disable max/min sizes of the game applet, allowing it to be resized to any amount.
 To enable this, pass the argument 1 yes or true after the language option, for example
+
 `java -jar rsloader.jar 0 yes`
 
 
