@@ -36,7 +36,7 @@ If you downloaded the RSLoader binary, to run it, execute the command
 
 ###Usage
 
-To use a different language, when loading the client append one of the following numbers after the command to change the loading language:
+To use a different language, pass one of these numbers with the -l or --lang argument:
 
 * 0 - English
 * 1 - Deutsch
@@ -46,12 +46,12 @@ To use a different language, when loading the client append one of the following
 
 For example, to load the French game with the downloaded binary
 
-`java -jar rsloader.jar 2`
+`java -jar rsloader.jar -l 2`
 
 The nolimits option will disable max/min sizes of the game applet, allowing it to be resized to any amount.
-To enable this, pass the argument 1 yes or true after the language option, for example
+To enable this, use the switch -nl or --nolimits
 
-`java -jar rsloader.jar 0 yes`
+`java -jar rsloader.jar --nolimits`
 
 
 ###License

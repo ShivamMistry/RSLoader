@@ -100,13 +100,23 @@ public class RSLoader extends JFrame {
         String lang = "0";
         boolean noLimits = false;
         if (args.length >= 1) {
-            String language = args[0];
-            if (language.length() == 1) {
-                lang = language;
-            }
-            if (args.length >= 2) {
-                String toLimit = args[1].toLowerCase().trim();
-                noLimits = toLimit.equals("1") || toLimit.contains("true") || toLimit.equals("yes");
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].equals("-l") || args[i].equals("--lang")) {
+                    lang = args[++i];
+                    if (lang.equalsIgnoreCase("fr") || lang.equalsIgnoreCase("french")) {
+                        lang = "2";
+                    } else if (lang.equalsIgnoreCase("de") || lang.equalsIgnoreCase("german")) {
+                        lang = "1";
+                    } else if (lang.equalsIgnoreCase("br") || lang.equalsIgnoreCase("brazillian") || lang.equalsIgnoreCase("portuguese")) {
+                        lang = "3";
+                    } else if (lang.equalsIgnoreCase("es") || lang.equalsIgnoreCase("spanish")) {
+                        lang = "6";
+                    }
+                } else if (args[i].equals("-nl") || args[i].equals("--nolimits")) {
+                    noLimits = true;
+                } else {
+                    System.out.println("Option " + args[i] + " not recognised and will be ignored.");
+                }
             }
         }
         new RSLoader("http://www.runescape.com/k=3/l=" + lang + "/jav_config.ws", noLimits);
