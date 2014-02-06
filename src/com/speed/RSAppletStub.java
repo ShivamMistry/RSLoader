@@ -111,14 +111,13 @@ public class RSAppletStub implements AppletStub, AppletContext {
     }
 
     public void setStream(String key, InputStream stream) throws IOException {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public InputStream getStream(String key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public Iterator<String> getStreamKeys() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 }

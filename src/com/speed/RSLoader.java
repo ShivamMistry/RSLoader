@@ -21,7 +21,7 @@ public class RSLoader extends JFrame {
     private final Properties properties, parameters, messages;
     private URLClassLoader loader;
 
-    public RSLoader(final String paramURL, boolean noLimits) {
+    public RSLoader(final String paramURL, boolean noLimits, boolean decorated) {
         this.paramURL = paramURL;
         properties = new Properties();
         parameters = new Properties();
@@ -39,7 +39,11 @@ public class RSLoader extends JFrame {
                 String appletMaxH = properties.getProperty("applet_maxheight", "1200");
                 applet.setMinimumSize(new Dimension(Integer.parseInt(appletMinW), Integer.parseInt(appletMinH)));
                 applet.setMaximumSize(new Dimension(Integer.parseInt(appletMaxW), Integer.parseInt(appletMaxH)));
+            } else {
+                applet.setMinimumSize(null);
+                applet.setMaximumSize(null);
             }
+            setUndecorated(!decorated);
             applet.setStub(stub);
             setTitle("RuneScape");
             add(applet);
@@ -99,6 +103,7 @@ public class RSLoader extends JFrame {
     public static void main(String[] args) {
         String lang = "0";
         boolean noLimits = false;
+        boolean decorated = true;
         if (args.length >= 1) {
             for (int i = 0; i < args.length; i++) {
                 if (args[i].equals("-l") || args[i].equals("--lang")) {
@@ -112,13 +117,18 @@ public class RSLoader extends JFrame {
                     } else if (lang.equalsIgnoreCase("es") || lang.equalsIgnoreCase("spanish")) {
                         lang = "6";
                     }
-                } else if (args[i].equals("-nl") || args[i].equals("--nolimits")) {
+                } else if (args[i].equals("-nl") || args[i].equals("--nolimits") || args[i].equals("-n")) {
+                    if (args[i].equals("-nl")) {
+                        System.out.println("Option -nl is deprecated and will be removed in a future release");
+                    }
                     noLimits = true;
+                } else if (args[i].equals("-u") || args[i].equals("--undecorated")) {
+                    decorated = false;
                 } else {
                     System.out.println("Option " + args[i] + " not recognised and will be ignored.");
                 }
             }
         }
-        new RSLoader("http://www.runescape.com/k=3/l=" + lang + "/jav_config.ws", noLimits);
+        new RSLoader("http://www.runescape.com/k=3/l=" + lang + "/jav_config.ws", noLimits, decorated);
     }
 }
