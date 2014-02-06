@@ -2,7 +2,10 @@
 
 ###General Information
 
-RSLoader is a very lightweight loader for the RuneScape game.
+RSLoader is a lightweight loader for the RuneScape game.
+
+Its aim is to replicate the functionality of jagexappletviewer.jar, but as FOSS software.
+RSLoader intends to eventually emulate jagexappletviewer.jar completely.
 
 It currently does _NOT_ display advertisements, so __do NOT use this to play on an account without a membership subscription__.
 
@@ -56,4 +59,4 @@ To enable this, use the switch -nl or --nolimits
 
 ###License
 
-This project is licensed under the LGPL, see license.txt for more information.
+This project is licensed under the MIT license, see license.txt for more information.
