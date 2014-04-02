@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.LinkedList;
 import java.util.Properties;
 
 /**
@@ -19,6 +20,7 @@ public class RSLoader extends JFrame {
 
     private final String paramURL;
     private final Properties properties, parameters, messages;
+    private LoadingDialog dialog;
     private URLClassLoader loader;
 
     public RSLoader(final String paramURL, boolean noLimits, boolean decorated) {
@@ -27,9 +29,16 @@ public class RSLoader extends JFrame {
         parameters = new Properties();
         messages = new Properties();
         try {
+            dialog = new LoadingDialog("Loading parameters");
+            dialog.setVisible(true);
             loadParams();
+            dialog.setMessage("Creating applet stub");
             RSAppletStub stub = new RSAppletStub(parameters, properties);
+            dialog.addProgress(5);
+            dialog.setMessage("Loading applet");
             Applet applet = loadClasses();
+            dialog.addProgress(20);
+            dialog.setMessage("Creating GUI");
             setPreferredSize(new Dimension(Integer.parseInt(properties.getProperty("window_preferredwidth", "1024")),
                     Integer.parseInt(properties.getProperty("window_preferredheight", "768"))));
             if (!noLimits) {
@@ -47,8 +56,13 @@ public class RSLoader extends JFrame {
             applet.setStub(stub);
             setTitle("RuneScape");
             add(applet);
+            dialog.addProgress(5);
+            dialog.setMessage("Initialising applet");
             applet.init();
+            dialog.setMessage("Opening GUI");
+            dialog.addProgress(5);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            dialog.end();
             setVisible(true);
             pack();
             applet.start();
@@ -71,32 +85,41 @@ public class RSLoader extends JFrame {
         } else {
             loader = new URLClassLoader(new URL[]{url});
         }
+        dialog.addProgress(5);
         return (Applet) loader.loadClass(properties.getProperty("initial_class", "Rs2Applet.class").replace(".class", "")).newInstance();
     }
 
     private void loadParams() throws IOException {
         URL url = new URL(paramURL);
         BufferedReader read = new BufferedReader(new InputStreamReader(url.openStream()));
+        dialog.addProgress(10);
         String input;
+        LinkedList<String> paramLines = new LinkedList<String>();
         while ((input = read.readLine()) != null) {
-            if (input.startsWith("msg=")) {
-                String s = input.substring("msg=".length());
+            paramLines.add(input);
+        }
+        double progressPerLine = (50d / paramLines.size());
+        System.out.println(progressPerLine);
+        for (String line : paramLines) {
+            if (line.startsWith("msg=")) {
+                String s = line.substring("msg=".length());
                 String[] parts = s.split("=", 2);
                 if (parts.length == 2) {
                     messages.put(parts[0], parts[1]);
                 }
-            } else if (input.startsWith("param=")) {
-                String s = input.substring("param=".length());
+            } else if (line.startsWith("param=")) {
+                String s = line.substring("param=".length());
                 String[] parts = s.split("=", 2);
                 if (parts.length == 2) {
                     parameters.put(parts[0], parts[1]);
                 }
             } else {
-                String[] parts = input.split("=", 2);
+                String[] parts = line.split("=", 2);
                 if (parts.length == 2) {
                     properties.put(parts[0], parts[1]);
                 }
             }
+            dialog.addProgress(progressPerLine);
         }
     }
 
@@ -104,6 +127,11 @@ public class RSLoader extends JFrame {
         String lang = "0";
         boolean noLimits = false;
         boolean decorated = true;
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (args.length >= 1) {
             for (int i = 0; i < args.length; i++) {
                 if (args[i].equals("-l") || args[i].equals("--lang")) {
