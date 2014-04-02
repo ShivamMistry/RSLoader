@@ -4,7 +4,10 @@
 
 RSLoader is a lightweight loader for the RuneScape game.
 
-Its aim is to replicate the functionality of jagexappletviewer.jar, but as FOSS software.
+Its aim is to replicate the functionality of jagexappletviewer.jar, but as free and open-source software (FOSS).
+
+RSLoader is not endorsed or affiliated in any way by/with Jagex Ltd, and as such proper precautions must be taken before using this software.
+
 RSLoader intends to eventually emulate jagexappletviewer.jar completely.
 
 It currently does _NOT_ display advertisements, so __do NOT use this to play on an account without a membership subscription__.
@@ -12,9 +15,11 @@ It currently does _NOT_ display advertisements, so __do NOT use this to play on 
 ###Dependencies
 
 This project requires that you have the following software installed:
-* A Java 7 compiler (if you wish to build the loader from source)
-* A Java interpreter or virtual machine _(use of Oracle's JRE is recommended)_
+* A Java 7 (or greater) compiler (if you wish to build the loader from source)
+* A Java interpreter or virtual machine _(use of Oracle's JRE is recommended)_, Java 7 is minimally required.
 * A graphical window manager for your operating system
+
+This project aims to stay compatible with Java 7 for the foreseeable future.
 
 This project optionally requires the following:
 * libgnome for opening URLs on some Unix-like operating systems (e.g. Linux), if not installed, URLs are printed to the console anyway
