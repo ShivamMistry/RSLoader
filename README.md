@@ -61,6 +61,14 @@ To enable this, use the switch -nl or --nolimits
 
 `java -jar rsloader.jar --nolimits`
 
+Oldschool Runescape (OSRS) can be launched with the -o, --oldschool, or -os options.
+
+For example
+
+`java -jar rsloader.jar -o`
+
+OSRS does not support multiple languages so the language switch will be ignored if provided (but will still be parsed).
+
 
 ###License
 

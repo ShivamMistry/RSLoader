@@ -127,6 +127,7 @@ public class RSLoader extends JFrame {
         String lang = "0";
         boolean noLimits = false;
         boolean decorated = true;
+        boolean oldschool = false;
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -152,11 +153,17 @@ public class RSLoader extends JFrame {
                     noLimits = true;
                 } else if (args[i].equals("-u") || args[i].equals("--undecorated")) {
                     decorated = false;
+                } else if (args[i].equals("-o") || args[i].equals("--oldschool") || args[i].equals("-os")) {
+                    oldschool = true;
                 } else {
                     System.out.println("Option " + args[i] + " not recognised and will be ignored.");
                 }
             }
         }
-        new RSLoader("http://www.runescape.com/k=3/l=" + lang + "/jav_config.ws", noLimits, decorated);
+        if (oldschool) {
+            new RSLoader("http://oldschool.runescape.com/jav_config.ws", noLimits, decorated);
+        } else {
+            new RSLoader("http://www.runescape.com/k=3/l=" + lang + "/jav_config.ws", noLimits, decorated);
+        }
     }
 }
