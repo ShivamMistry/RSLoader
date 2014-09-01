@@ -66,7 +66,7 @@ public class RSLoader extends JFrame {
             setVisible(true);
             pack();
             applet.start();
-        } catch (IOException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -128,6 +128,7 @@ public class RSLoader extends JFrame {
         boolean noLimits = false;
         boolean decorated = true;
         boolean oldschool = false;
+        String configUrl = null;
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -155,12 +156,17 @@ public class RSLoader extends JFrame {
                     decorated = false;
                 } else if (args[i].equals("-o") || args[i].equals("--oldschool") || args[i].equals("-os")) {
                     oldschool = true;
-                } else {
+                } else if (args[i].equals("-c") || args[i].equals("--config")) {
+                    configUrl = args[++i];
+                }
+                else {
                     System.out.println("Option " + args[i] + " not recognised and will be ignored.");
                 }
             }
         }
-        if (oldschool) {
+        if (configUrl != null) {
+            new RSLoader(configUrl, noLimits, decorated);
+        } else if (oldschool) {
             new RSLoader("http://oldschool.runescape.com/jav_config.ws", noLimits, decorated);
         } else {
             new RSLoader("http://www.runescape.com/k=3/l=" + lang + "/jav_config.ws", noLimits, decorated);
