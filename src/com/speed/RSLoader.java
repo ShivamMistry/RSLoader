@@ -58,13 +58,13 @@ public class RSLoader extends JFrame {
             add(applet);
             dialog.addProgress(5);
             dialog.setMessage("Initialising applet");
-            applet.init();
             dialog.setMessage("Opening GUI");
             dialog.addProgress(5);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             dialog.end();
             setVisible(true);
             pack();
+            applet.init();
             applet.start();
         } catch (Exception e) {
             e.printStackTrace();
